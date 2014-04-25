@@ -1056,7 +1056,7 @@ article header.article-info h1.article-name a:hover span {
 }
 article .article-content {
   color: #413f3f;
-  font-size: 93.1%;
+  font-size: 87%;
   margin-top: 1em;
 }
 article .article-content .kb {
@@ -1096,13 +1096,13 @@ article .article-content h3 {
   margin-top: 0.4em;
 }
 article .article-content h1 {
-  font-size: 220%;
-}
-article .article-content h2 {
   font-size: 200%;
 }
+article .article-content h2 {
+  font-size: 180%;
+}
 article .article-content h3 {
-  font-size: 170%;
+  font-size: 160%;
 }
 article .article-content h4,
 article .article-content h5,
