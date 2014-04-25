@@ -1,0 +1,447 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>算法概论笔记之 Chapter6 DP | 如梦幻泡影，如露亦如电</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Alvin Fan">
+    
+    <meta name="description" content="§
+适用范围
+一般在题目中出现求最优解的问题就要考虑动态规划了，但是否可以用还要满足两个条件：（1） 最优子结构（最优化原理）（2） 无后效性
+所谓的无后效性, 又称为马尔柯夫性，是指系统从某个阶段往后的发展，仅由本阶段所处的状态及其往后的决策所决定，和系统以前经历的状态和决策无关。只能通过当前状态">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="ragingat" />
+    <meta name="twitter:title" content="算法概论笔记之 Chapter6 DP | 如梦幻泡影，如露亦如电" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="如梦幻泡影，如露亦如电">如梦幻泡影，如露亦如电</a></h1>
+				<h2 class="blog-motto"><a href="/">履霜行，无远弗届</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/categories/En">En</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/cn">关于</a></li>
+					
+					<li><form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:ragingcat.info">
+					</form></li>
+				</ul>
+			</nav>
+</div>
+    </header>
+    <div id="wrap">
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <time datetime="2014-04-11T09:04:38.000Z" itemprop="datePublished">
+      <a href="/2014/04/11/ch6-dp/" title="算法概论笔记之 Chapter6 DP" itemprop="url" class="article-time">Apr 11, 2014</a>
+    </time>
+
+  <h1 itemprop="name" class="article-name">
+    
+      <a href="/2014/04/11/ch6-dp/" title="算法概论笔记之 Chapter6 DP" itemprop="url"><span>算法概论笔记之 Chapter6 DP</span></a>
+  </h1>
+</header>
+
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#§"><span class="toc-number">1.</span> <span class="toc-text">§</span></a></li><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#适用范围"><span class="toc-number">1.0.1.</span> <span class="toc-text">适用范围</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#动态规划和贪心算法的区别"><span class="toc-number">1.0.2.</span> <span class="toc-text">动态规划和贪心算法的区别</span></a></li><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#相同点"><span class="toc-number">1.0.2.1.</span> <span class="toc-text">相同点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#不同点："><span class="toc-number">1.0.2.2.</span> <span class="toc-text">不同点：</span></a></li></ol><li class="toc-item toc-level-3"><a class="toc-link" href="#基本思路："><span class="toc-number">1.0.3.</span> <span class="toc-text">基本思路：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#递归和分治的对比"><span class="toc-number">1.0.4.</span> <span class="toc-text">递归和分治的对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#通常的子问题划分"><span class="toc-number">1.0.5.</span> <span class="toc-text">通常的子问题划分</span></a></li></ol>
+		
+		</div>
+		
+		<h1 id="§">§</h1>
+<h3 id="适用范围">适用范围</h3>
+<p>一般在题目中出现求最优解的问题就要考虑动态规划了，但是否可以用还要满足两个条件：<br>（1） 最优子结构（最优化原理）<br>（2） 无后效性</p>
+<p>所谓的无后效性, 又称为马尔柯夫性，是指系统从某个阶段往后的发展，仅由本阶段所处的状态及其往后的决策所决定，和系统以前经历的状态和决策无关。只能通过当前状态影响未来的发展，当前的状态就是以后过程发展的初始条件。   </p>
+<p>当然，有时换一个划分状态或阶段的方法就满足无后效性了，这样的问题仍然可以用动态规划解。</p>
+<p>能够用动态规划解决的问题，往往是最优化问题，且问题的最优解(或特定解)的局部往往是局部问题在相应条件下的最优解，而且问题的最优解与其子问题的最优解要有一定的关联，要能建立递推关系。<br>此外，为了体现动态规划的高时效，子问题应当是互相重叠的，即很多不同的问题共享相同的子问题。(如果子问题不重叠，则宜使用其它方法，如分治法等。)</p>
+<h3 id="动态规划和贪心算法的区别">动态规划和贪心算法的区别</h3>
+<h4 id="相同点">相同点</h4>
+<ul>
+<li>动态规划和贪心算法都是一种递推算法 </li>
+<li>均有局部最优解来推导全局最优解 </li>
+</ul>
+<h4 id="不同点：">不同点：</h4>
+<p>贪心算法：</p>
+<ul>
+<li>贪心算法中，作出的每步贪心决策都无法改变，因为贪心策略是由上一步的最优解推导下一步的最优解，<code>而上一部之前的最优解则不作保留</code>。 </li>
+<li>贪心法正确的条件是：每一步的最优解一定包含上一步的最优解。 </li>
+</ul>
+<p>动态规划算法： </p>
+<ul>
+<li>全局最优解中一定包含某个局部最优解，<code>但不一定包含前一个局部最优解，因此需要记录之前的所有最优解</code></li>
+<li>边界条件：即最简单的，可以直接得出的局部最优解</li>
+</ul>
+<h3 id="基本思路：">基本思路：</h3>
+<p>求最优解的问题，从根本上说是一种对解空间的遍历。最直接的暴力分析容易得到，最优解的解空间通常都是以指数阶增长，因此暴力穷举都是不可行的。<br>最优解问题大部分都可以拆分成一个个的子问题，把解空间的遍历视作对子问题树的遍历，则以某种形式对树整个的遍历一遍就可以求出最优解，如上面的分析，这是不可行的。<br>贪心和动态规划本质上是对子问题树的一种修剪。两种算法要求问题都具有的一个性质就是“子问题最优性”。即，组成最优解的每一个子问题的解，对于这个子问题本身肯定也是最优的。如果以自顶向下的方向看问题树（原问题作根），则，我们每次只需要向下遍历代表最优解的子树就可以保证会得到整体的最优解。形象一点说，可以简单的用一个值（最优值）代表整个子树，而不用去求出这个子树所可能代表的所有值。<br>动态规划方法代表了这一类问题的一般解法。我们自底向上（从叶子向根）构造子问题的解，对每一个子树的根，求出下面每一个叶子的值，并且以其中的最优值作为自身的值，其它的值舍弃。动态规划的代价就取决于可选择的数目（树的叉数）和子问题的的数目（树的节点数，或者是树的高度？）。<br>贪心算法是动态规划方法的一个特例。每一个子树的根的值不取决于下面叶子的值 。换句话说，不需要知道一个节点所有子树的情况，就可以求出这个节点的值。通常这个值都是对于当前的问题情况下，显而易见的“最优”情况。因此用“贪心”来描述这个算法的本质。由于贪心算法的这个特性，它对解空间树的遍历不需要自底向上，而只需要自根开始，选择最优的路，一直走到底就可以了。这样，与动态规划相比，它的代价只取决于子问题的数目，而选择数目总为1。</p>
+<hr>
+<h3 id="递归和分治的对比">递归和分治的对比</h3>
+<blockquote>
+<p>Then why did recursion work so well with divide-and-conquer? The key point is that in divide-and-conquer, a problem is expressed in terms of subproblems that are substantially smaller, say half the size. For instance, mergesort sorts an array of size n by recursively sorting two subarrays of size n/2. Because of this sharp drop in problem size, the full recursion tree has only logarithmic depth and a polynomial number of nodes.<br>In contrast, in a typical dynamic programming formulation, a problem is reduced to subproblems that are only slightly smaller—for instance, L(j) relies on L(j − 1). Thus the full recursion tree generally has polynomial depth and an exponential number of nodes. However, it turns out that most of these nodes are repeats, that there are not too many distinct subproblems among them. Efficiency is therefore obtained by explicitly enumerating the distinct subproblems and solving them in the right order.</p>
+</blockquote>
+<h3 id="通常的子问题划分">通常的子问题划分</h3>
+<blockquote>
+<p>Finding the right subproblem takes creativity and experimentation. But there are a few standard choices that seem to arise repeatedly in dynamic programming.</p>
+<ul>
+<li>The input is x1,x2,…,xn and a subproblem is x1,x2,…,xi.<br>The number of subproblems is therefore linear.</li>
+<li>The input is x1,…,xn, and y1,…,ym. A subproblem is x1, …,xi and y1,…,yj.<br>The number of subproblems is O(mn).</li>
+<li>The input is x1,…,xn and a subproblem is xi,xi+1,…,xj.<br>The number of subproblems is O(n2).</li>
+<li>The input is a rooted tree. A subproblem is a rooted subtree.</li>
+</ul>
+</blockquote>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CN/">CN</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/读书笔记/">读书笔记</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://ragingcat.info/2014/04/11/ch6-dp/" data-title="算法概论笔记之 Chapter6 DP | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/04/14/跑步/" title="跑步">
+  <strong>上一篇：</strong><br/>
+  <span>
+  跑步</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/04/11/ch1-数字的算法/"  title="算法概论笔记之 Chapter1 数字的算法">
+ <strong>下一篇：</strong><br/> 
+ <span>算法概论笔记之 Chapter1 数字的算法
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/CN/" title="CN">CN<sup>8</sup></a></li>
+		
+			<li><a href="/categories/En/" title="En">En<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Algo/" title="Algo">Algo<sup>7</sup></a></li>
+		
+			<li><a href="/tags/C++/" title="C++">C++<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DP/" title="DP">DP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Front-End/" title="Front-End">Front-End<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/LeetCode/" title="LeetCode">LeetCode<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Stack/" title="Stack">Stack<sup>1</sup></a></li>
+		
+			<li><a href="/tags/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+			<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+      <li><a href="http://yinwang0.wordpress.com" target="_blank" title="WangYin">WangYin's Blog</a></li>
+      <li><a href="http://www.yinwang.org/" target="_blank" title="WangYin">WangYin's 中文 Blog</a></li>
+      <li><a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RuanYifeng">RuanYifeng's Blog</a></li>
+      <li><a href="http://leetcodenotes.wordpress.com/" target="_blank" title="Lexi">Lexi's Leetcode solutions</a></li>
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+</div>
+    <footer><div id="footer" >
+	
+    <div class="social-font" class="clearfix">
+        
+        <a href="http://weibo.com/rockcatorz" target="_blank" class="icon-weibo" title="weibo"></a>
+        
+        
+        <a href="https://github.com/RagingCat" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/ragingat" target="_blank" class="icon-twitter" title="twitter"></a>
+        
+        
+        
+        
+        <a href="mailto:andyfanzz@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+	<section class="info">
+		<p class="l1">
+            This is Alvin Fan&#39;s personal blog.
+        </p>
+            <!-- <br/> -->
+        <p class="l2">
+			An omnivorous bipedal pseudo full stack engineer.
+        </p>
+	</section>
+	 
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/RagingCat/hexo-theme-ragingcat" target="_blank" title="hexo-theme-ragingcat">Raging Cat</a> © 2014
+		
+		<a href="http://ragingcat.info/about" target="_blank" title="Alvin Fan">Alvin Fan</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize();
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"ragingcat"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+});
+</script>
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-50130371-1', 'ragingcat.info');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </body>
+</html>

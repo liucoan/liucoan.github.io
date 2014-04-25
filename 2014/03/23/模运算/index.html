@@ -1,0 +1,418 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>模运算 | 如梦幻泡影，如露亦如电</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Alvin Fan">
+    
+    <meta name="description" content="在计算机科学中，模运算的重要性毋庸置疑，而且应用广泛，比如在数的存储方式(补码)，密码学，Hash算法里都有重要作用。
+补码
+
+任何在$-2^{n-1}$到$2^{n-1}-1$范围之内的整数都被存储为其模2的结果。正数的补码是其本身负整数$-x$, 将绝对值表示成二进制之后按位取反，这相当于$2^">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="ragingat" />
+    <meta name="twitter:title" content="模运算 | 如梦幻泡影，如露亦如电" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="如梦幻泡影，如露亦如电">如梦幻泡影，如露亦如电</a></h1>
+				<h2 class="blog-motto"><a href="/">履霜行，无远弗届</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/categories/En">En</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/cn">关于</a></li>
+					
+					<li><form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:ragingcat.info">
+					</form></li>
+				</ul>
+			</nav>
+</div>
+    </header>
+    <div id="wrap">
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <time datetime="2014-03-23T23:40:04.000Z" itemprop="datePublished">
+      <a href="/2014/03/23/模运算/" title="模运算" itemprop="url" class="article-time">Mar 23, 2014</a>
+    </time>
+
+  <h1 itemprop="name" class="article-name">
+    
+      <a href="/2014/03/23/模运算/" title="模运算" itemprop="url"><span>模运算</span></a>
+  </h1>
+</header>
+
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#补码"><span class="toc-number">1.</span> <span class="toc-text">补码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#模除法"><span class="toc-number">2.</span> <span class="toc-text">模除法</span></a></li></ol>
+		
+		</div>
+		
+		<p>在计算机科学中，模运算的重要性毋庸置疑，而且应用广泛，比如在数的存储方式(补码)，密码学，Hash算法里都有重要作用。</p>
+<h3 id="补码">补码</h3>
+<blockquote>
+<p>任何在$-2^{n-1}$到$2^{n-1}-1$范围之内的整数都被存储为其模2的结果。<br>正数的补码是其本身<br>负整数$-x$, 将绝对值表示成二进制之后按位取反，这相当于$2^n-1-x$，最后在末位加1，这相当于$2^n-x$。</p>
+</blockquote>
+<p>举例来说，不失一般性假设n=8, 假设二进制表示的负数$-x=00001101$=13，按位取反后变成11110010=242，末位加1后变成11110011=243，而243+13=256=$2^8$。n=32的情况类似，不过在取反时不要忘记对前面的那些0取反。</p>
+<h3 id="模除法">模除法</h3>
+<blockquote>
+<p>模反元素 又称之为 乘法逆元<br>一整数a對同餘n之模反元素是指滿足以下公式的整數 b<br>$a^{-1} \equiv b \pmod{n}$.<br>也可以寫成以下的式子<br>$ab \equiv 1 \pmod{n}$.<br>整数 a 對模数 n 之模反元素存在的充分必要條件是 a 和 n 互質，若此模反元素存在，在模数 n 下的除法可以用和對應模反元素的乘法來達成，此概念和實數除法的概念相同。</p>
+</blockquote>
+<p>什么是模除法呢? 我的理解就是$x\equiv \frac ba (modN)$, 相当于$ax\equiv b (mod N)$.<br>先写到这里吧，待续。。。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CN/">CN</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Algo/">Algo</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://ragingcat.info/2014/03/23/模运算/" data-title="模运算 | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/2014/04/11/ch1-数字的算法/" title="算法概论笔记之 Chapter1 数字的算法">
+  <strong>上一篇：</strong><br/>
+  <span>
+  算法概论笔记之 Chapter1 数字的算法</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/2014/03/23/Hash/"  title="Hash">
+ <strong>下一篇：</strong><br/> 
+ <span>Hash
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/CN/" title="CN">CN<sup>8</sup></a></li>
+		
+			<li><a href="/categories/En/" title="En">En<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Algo/" title="Algo">Algo<sup>7</sup></a></li>
+		
+			<li><a href="/tags/C++/" title="C++">C++<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DP/" title="DP">DP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Front-End/" title="Front-End">Front-End<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/LeetCode/" title="LeetCode">LeetCode<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Stack/" title="Stack">Stack<sup>1</sup></a></li>
+		
+			<li><a href="/tags/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+			<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+      <li><a href="http://yinwang0.wordpress.com" target="_blank" title="WangYin">WangYin's Blog</a></li>
+      <li><a href="http://www.yinwang.org/" target="_blank" title="WangYin">WangYin's 中文 Blog</a></li>
+      <li><a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RuanYifeng">RuanYifeng's Blog</a></li>
+      <li><a href="http://leetcodenotes.wordpress.com/" target="_blank" title="Lexi">Lexi's Leetcode solutions</a></li>
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+</div>
+    <footer><div id="footer" >
+	
+    <div class="social-font" class="clearfix">
+        
+        <a href="http://weibo.com/rockcatorz" target="_blank" class="icon-weibo" title="weibo"></a>
+        
+        
+        <a href="https://github.com/RagingCat" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/ragingat" target="_blank" class="icon-twitter" title="twitter"></a>
+        
+        
+        
+        
+        <a href="mailto:andyfanzz@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+	<section class="info">
+		<p class="l1">
+            This is Alvin Fan&#39;s personal blog.
+        </p>
+            <!-- <br/> -->
+        <p class="l2">
+			An omnivorous bipedal pseudo full stack engineer.
+        </p>
+	</section>
+	 
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/RagingCat/hexo-theme-ragingcat" target="_blank" title="hexo-theme-ragingcat">Raging Cat</a> © 2014
+		
+		<a href="http://ragingcat.info/about" target="_blank" title="Alvin Fan">Alvin Fan</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize();
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"ragingcat"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+});
+</script>
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-50130371-1', 'ragingcat.info');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </body>
+</html>

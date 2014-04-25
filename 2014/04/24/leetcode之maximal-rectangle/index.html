@@ -1,0 +1,736 @@
+
+ <!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>LeetCode之Maximal Rectangle | 如梦幻泡影，如露亦如电</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Alvin Fan">
+    
+    <meta name="description" content="Maximal Rectangle
+
+Given a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing all ones and return its area.
+
+这类问题包括上次的Lar">
+    
+    
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="ragingat" />
+    <meta name="twitter:title" content="LeetCode之Maximal Rectangle | 如梦幻泡影，如露亦如电" />
+      
+    
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      <div>
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="如梦幻泡影，如露亦如电">如梦幻泡影，如露亦如电</a></h1>
+				<h2 class="blog-motto"><a href="/">履霜行，无远弗届</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/categories/En">En</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+						<li><a href="/cn">关于</a></li>
+					
+					<li><form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:ragingcat.info">
+					</form></li>
+				</ul>
+			</nav>
+</div>
+    </header>
+    <div id="wrap">
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+    <time datetime="2014-04-25T00:19:53.000Z" itemprop="datePublished">
+      <a href="/2014/04/24/leetcode之maximal-rectangle/" title="LeetCode之Maximal Rectangle" itemprop="url" class="article-time">Apr 24, 2014</a>
+    </time>
+
+  <h1 itemprop="name" class="article-name">
+    
+      <a href="/2014/04/24/leetcode之maximal-rectangle/" title="LeetCode之Maximal Rectangle" itemprop="url"><span>LeetCode之Maximal Rectangle</span></a>
+  </h1>
+</header>
+
+	<div class="article-content">
+		
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Maximal_Rectangle"><span class="toc-number">1.</span> <span class="toc-text">Maximal Rectangle</span></a></li></ol>
+		
+		</div>
+		
+		<h3 id="Maximal_Rectangle">Maximal Rectangle</h3>
+<blockquote>
+<p>Given a 2D binary matrix filled with 0’s and 1’s, find the largest rectangle containing all ones and return its area.</p>
+</blockquote>
+<p>这类问题包括上次的Largest Rectangle in Histogram，很重要的一个思路就是要找连续非递减子序列。<br>最佳解法是O(mn)复杂度的。第一种解法是O(mnm)复杂度，效率折损在了在遍历每个位置的时候又去往上或往下遍历。其实可以在优化为在遍历每个位置的同时计算出该位置的最大面积。<br>第二种解法利用了Largest Rectangle in Histogram的O(n)解法。<br>第三种解法则比较难理解，需要认真调试跟踪之后才好理解。思路有些接近于第二种解法。<br>精华就在下面代码的注释里。</p>
+<p>最后附上代码如下</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+</pre></td><td class="code"><pre><span class="preprocessor">#include &lt;vector&gt;</span>
+<span class="preprocessor">#include &lt;stack&gt;</span>
+<span class="preprocessor">#include &lt;string&gt;</span>
+<span class="preprocessor">#include &lt;iostream&gt;</span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;
+
+<span class="keyword">class</span> Solution {
+<span class="keyword">public</span>:
+<span class="comment">/**
+*
+*
+O(mnm)复杂度解法，参考了
+http://leetcodenotes.wordpress.com/2013/10/19/leetcode-maximal-rectangle-0101%E7%BB%84%E6%88%90%E7%9A%84%E7%9F%A9%E9%98%B5%EF%BC%8C%E6%B1%82%E9%87%8C%E9%9D%A2%E5%85%A8%E6%98%AF1%E7%9A%84%E7%9F%A9%E5%BD%A2%E7%9A%84%E6%9C%80%E5%A4%A7%E9%9D%A2/
+*
+**/</span>
+    <span class="keyword">int</span> expand(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &d, <span class="keyword">int</span> m, <span class="keyword">int</span> n) {
+        <span class="keyword">int</span> h = <span class="number">0</span>;
+        <span class="keyword">int</span> j = n;
+        <span class="comment">//go up</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = m; i &gt;= <span class="number">0</span>; --i) {
+            <span class="keyword">if</span>(d[i][j] &gt;= d[m][n]) ++h;
+            <span class="keyword">else</span> <span class="keyword">break</span>;
+        }
+
+        <span class="comment">//go down</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = m+<span class="number">1</span>; i &lt; d.size(); ++i) {
+            <span class="keyword">if</span>(d[i][j] &gt;= d[m][n]) ++h;
+            <span class="keyword">else</span> <span class="keyword">break</span>;
+        }
+        <span class="keyword">return</span> h*d[m][n];
+    }
+    <span class="keyword">int</span> maximalRectangle(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &matrix) {
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> d(matrix);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; d.size(); i++) {
+            d[i][<span class="number">0</span>] = d[i][<span class="number">0</span>] - <span class="string">'0'</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt; d[i].size(); j++) {
+                d[i][j] = d[i][j] == <span class="string">'1'</span> ? d[i][j-<span class="number">1</span>]+<span class="number">1</span> : <span class="number">0</span>;
+             }
+        }
+
+        <span class="keyword">int</span> rlt = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; d.size(); i++) {
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; d[i].size(); j++) {
+                <span class="keyword">if</span>(d[i][j])
+                    rlt = max(rlt, expand(d, i, j));
+             }
+        }
+
+        <span class="keyword">return</span> rlt;
+    }
+<span class="comment">/*-----  End of Section comment block  ------*/</span>
+
+
+
+<span class="comment">/**
+*
+* O(mn)复杂度解法, 先将每一行转化成一排柱状图，利用之前柱状图最大面积的O(n)算法，遍历所有的行，找出每一行的最大值。
+*
+**/</span>
+    <span class="keyword">int</span> largestRectangleArea(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &h) {
+         <span class="stl_container"><span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt;</span> S;
+         h.push_back(<span class="number">0</span>);
+         <span class="keyword">int</span> sum = <span class="number">0</span>;
+         <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; h.size(); i++) {
+              <span class="keyword">if</span> (S.empty() || h[i] &gt; h[S.top()]) S.push(i);
+              <span class="keyword">else</span> {
+                   <span class="keyword">int</span> tmp = S.top();
+                   S.pop();
+                    sum = max(sum, h[tmp]*(S.empty()? i : i-S.top()-<span class="number">1</span>));
+                    i--;
+               }
+          }
+          <span class="keyword">return</span> sum;
+    }
+    <span class="keyword">int</span> maximalRectangle2(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &matrix) {
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> d(matrix);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; d.size(); i++) {
+            <span class="keyword">if</span>(<span class="number">0</span> == i){
+                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; d[i].size(); j++) {
+                    d[i][j] = d[i][j] == <span class="string">'1'</span> ? <span class="number">1</span> : <span class="number">0</span>;
+                 }
+                 <span class="keyword">continue</span>;
+            }
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; d[i].size(); j++) {
+                d[i][j] = d[i][j] == <span class="string">'1'</span> ? d[i-<span class="number">1</span>][j]+<span class="number">1</span> : <span class="number">0</span>;
+             }
+        }
+
+        <span class="keyword">int</span> rlt = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; d.size(); i++) {
+            rlt = max(rlt, largestRectangleArea(d[i]));
+        }
+        <span class="keyword">return</span> rlt;
+    }
+    <span class="comment">/*-----  End of Section comment block  ------*/</span>
+
+<span class="comment">/**
+*
+* 另一个O(mn)解法，和上个解法本质上一样
+*
+**/</span>
+
+    <span class="keyword">int</span> maximalRectangle3(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &matrix) {
+            <span class="keyword">if</span> (matrix.empty())  <span class="keyword">return</span> <span class="number">0</span>;
+
+            <span class="keyword">const</span> <span class="keyword">int</span> m = matrix.size();
+            <span class="keyword">const</span> <span class="keyword">int</span> n = matrix[<span class="number">0</span>].size();
+            <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> H(n, <span class="number">0</span>);
+            <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> L(n, <span class="number">0</span>);
+            <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> R(n, n);
+
+            <span class="keyword">int</span> ret = <span class="number">0</span>;
+            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; m; ++i) {
+                <span class="keyword">int</span> left = <span class="number">0</span>, right = n;
+                <span class="comment">// H[j]相当于转化后的每一行的柱状图在相应位置上的高度</span>
+                <span class="comment">// 如果某位置是0，则L[j]也是0。</span>
+                <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; ++j) {
+                    <span class="keyword">if</span> (matrix[i][j] == <span class="string">'1'</span>) {
+                        ++H[j];
+                        L[j] = max(L[j], left);
+                    } <span class="keyword">else</span> {
+                        left = j+<span class="number">1</span>;
+                        H[j] = <span class="number">0</span>; L[j] = <span class="number">0</span>; R[j] = n;
+                    }
+                }
+                <span class="comment">// 从右至左处理该行柱状图</span>
+                <span class="keyword">for</span> (<span class="keyword">int</span> j = n-<span class="number">1</span>; j &gt;= <span class="number">0</span>; --j) {
+                    <span class="keyword">if</span> (matrix[i][j] == <span class="string">'1'</span>) {
+                        R[j] = min(R[j], right);
+                        ret = max(ret, H[j]*(R[j]-L[j]));
+                        <span class="comment">// cout&lt;&lt;ret&lt;&lt;endl;</span>
+                    } <span class="keyword">else</span> {
+                        right = j;
+                    }
+                }
+            }
+            <span class="keyword">return</span> ret;
+        }
+};
+
+
+
+<span class="keyword">int</span> main()
+{
+    <span class="keyword">int</span> a[<span class="number">4</span>][<span class="number">4</span>] = {
+         {<span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>},
+         {<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>},
+         {<span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>},
+         {<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>}
+    };
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> v(<span class="number">4</span>);
+    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; ++i){
+        v[i] = <span class="built_in">std</span>::move( <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span>(a[i], a[i]+<span class="number">4</span>) );
+    }
+
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; v.size(); i++) {
+        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; v[i].size(); j++) {
+            v[i][j] += <span class="string">'0'</span>;
+        }
+    }
+    Solution so;
+    <span class="built_in">cout</span> &lt;&lt; so.maximalRectangle3(v);
+
+}
+</pre></td></tr></table></figure>
+
+  
+	</div>
+		<footer class="article-footer clearfix">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/CN/">CN</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/LeetCode/">LeetCode</a><a href="/tags/DP/">DP</a>
+  </div>
+
+
+
+
+<div class="article-share" id="share">
+
+  <div data-url="http://ragingcat.info/2014/04/24/leetcode之maximal-rectangle/" data-title="LeetCode之Maximal Rectangle | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  </div>
+
+</div>
+</footer>   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2014/04/24/leetcode之largest-rectangle-in-histogram/"  title="leetcode之Largest Rectangle in Histogram">
+ <strong>下一篇：</strong><br/> 
+ <span>leetcode之Largest Rectangle in Histogram
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+<section class="comment">
+	<div class="ds-thread"></div>
+</section>
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+<div class="categorieslist">
+	<p class="asidetitle">Categories</p>
+		<ul>
+		
+			<li><a href="/categories/CN/" title="CN">CN<sup>8</sup></a></li>
+		
+			<li><a href="/categories/En/" title="En">En<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			<li><a href="/tags/Algo/" title="Algo">Algo<sup>7</sup></a></li>
+		
+			<li><a href="/tags/C++/" title="C++">C++<sup>1</sup></a></li>
+		
+			<li><a href="/tags/DP/" title="DP">DP<sup>2</sup></a></li>
+		
+			<li><a href="/tags/Front-End/" title="Front-End">Front-End<sup>1</sup></a></li>
+		
+			<li><a href="/tags/Hexo/" title="Hexo">Hexo<sup>1</sup></a></li>
+		
+			<li><a href="/tags/LeetCode/" title="LeetCode">LeetCode<sup>3</sup></a></li>
+		
+			<li><a href="/tags/Stack/" title="Stack">Stack<sup>1</sup></a></li>
+		
+			<li><a href="/tags/生活/" title="生活">生活<sup>1</sup></a></li>
+		
+			<li><a href="/tags/读书笔记/" title="读书笔记">读书笔记<sup>2</sup></a></li>
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+      <li><a href="http://yinwang0.wordpress.com" target="_blank" title="WangYin">WangYin's Blog</a></li>
+      <li><a href="http://www.yinwang.org/" target="_blank" title="WangYin">WangYin's 中文 Blog</a></li>
+      <li><a href="http://www.ruanyifeng.com/blog/" target="_blank" title="RuanYifeng">RuanYifeng's Blog</a></li>
+      <li><a href="http://leetcodenotes.wordpress.com/" target="_blank" title="Lexi">Lexi's Leetcode solutions</a></li>
+    </ul>
+</div>
+
+  <div class="rsspart">
+	<a href="null" target="_blank" title="rss">RSS</a>
+</div>
+
+</aside>
+</div>
+    </div>
+</div>
+    <footer><div id="footer" >
+	
+    <div class="social-font" class="clearfix">
+        
+        <a href="http://weibo.com/rockcatorz" target="_blank" class="icon-weibo" title="weibo"></a>
+        
+        
+        <a href="https://github.com/RagingCat" target="_blank" class="icon-github" title="github"></a>
+        
+        
+        
+        <a href="https://twitter.com/ragingat" target="_blank" class="icon-twitter" title="twitter"></a>
+        
+        
+        
+        
+        <a href="mailto:andyfanzz@gmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+        
+    </div>
+	<section class="info">
+		<p class="l1">
+            This is Alvin Fan&#39;s personal blog.
+        </p>
+            <!-- <br/> -->
+        <p class="l2">
+			An omnivorous bipedal pseudo full stack engineer.
+        </p>
+	</section>
+	 
+		<p class="copyright">Powered by <a href="http://zespia.tw/hexo/" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/RagingCat/hexo-theme-ragingcat" target="_blank" title="hexo-theme-ragingcat">Raging Cat</a> © 2014
+		
+		<a href="http://ragingcat.info/about" target="_blank" title="Alvin Fan">Alvin Fan</a>
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  $(window).resize(function(){
+    getSize();
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else
+    {
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+    }
+  });
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      h  = $('article h2')
+      ah = $('article h2'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  if(ah.length==0){
+    t.css('display','none');
+  }else{
+    c.click(function(){
+      ta.css('display', 'block').addClass('fadeIn');
+    });
+    o.click(function(){
+      ta.css('display', 'none');
+    });
+    $(window).scroll(function(){
+      ta.css("top",Math.max(140,320-$(this).scrollTop()));
+    });
+  };
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#share"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="#textlogo" class="article-back-to-top" title="Top"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="QRcode"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"ragingcat"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = '//static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0]
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+});
+</script>
+
+
+<script type="text/javascript">
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-50130371-1', 'ragingcat.info');  
+ga('send', 'pageview');
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  </body>
+</html>
