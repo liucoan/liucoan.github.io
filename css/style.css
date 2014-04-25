@@ -1017,7 +1017,7 @@ div.page {
   position: relative;
 }
 article {
-  font-size: 108%;
+  font-size: 115%;
 }
 article header.article-info a {
   display: block;
@@ -1056,7 +1056,7 @@ article header.article-info h1.article-name a:hover span {
 }
 article .article-content {
   color: #413f3f;
-  font-size: 110%;
+  font-size: 93.1%;
   margin-top: 1em;
 }
 article .article-content .kb {
