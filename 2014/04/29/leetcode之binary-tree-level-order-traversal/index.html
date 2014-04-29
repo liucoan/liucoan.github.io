@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>C++ 11 | 如梦幻泡影，如露亦如电</title>
+    <title>LeetCode之Binary Tree Level Order Traversal | 如梦幻泡影，如露亦如电</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Alvin Fan">
     
-    <meta name="description" content="std::mov
+    <meta name="description" content="Binary Tree Level Order Traversal
 
-std::move仅仅是简单地将左值转换为右值，它本身并没有转移任何东西。它仅仅是让对象可以转移。或许它应该被命名为std::cast_to_rvalue 或者 std::enable_move，但是现在我们对这个名称还束手无策。实现move语意的最关键环节在于能够在编译期区分左">
+Given a binary tree, return the level order traversal of its nodes’ values. (ie, from left to right, level by level">
     
     
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="ragingat" />
-    <meta name="twitter:title" content="C++ 11 | 如梦幻泡影，如露亦如电" />
+    <meta name="twitter:title" content="LeetCode之Binary Tree Level Order Traversal | 如梦幻泡影，如露亦如电" />
       
     
     
@@ -65,13 +65,13 @@ std::move仅仅是简单地将左值转换为右值，它本身并没有转移�
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
-    <time datetime="2014-04-15T07:04:42.000Z" itemprop="datePublished">
-      <a href="/2014/04/15/c++-11/" title="C++ 11" itemprop="url" class="article-time">Apr 15, 2014</a>
+    <time datetime="2014-04-29T07:16:33.000Z" itemprop="datePublished">
+      <a href="/2014/04/29/leetcode之binary-tree-level-order-traversal/" title="LeetCode之Binary Tree Level Order Traversal" itemprop="url" class="article-time">Apr 29, 2014</a>
     </time>
 
   <h1 itemprop="name" class="article-name">
     
-      <a href="/2014/04/15/c++-11/" title="C++ 11" itemprop="url"><span>C++ 11</span></a>
+      <a href="/2014/04/29/leetcode之binary-tree-level-order-traversal/" title="LeetCode之Binary Tree Level Order Traversal" itemprop="url"><span>LeetCode之Binary Tree Level Order Traversal</span></a>
   </h1>
 </header>
 
@@ -81,15 +81,87 @@ std::move仅仅是简单地将左值转换为右值，它本身并没有转移�
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#std::mov"><span class="toc-number">1.</span> <span class="toc-text">std::mov</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Binary_Tree_Level_Order_Traversal"><span class="toc-number">1.</span> <span class="toc-text">Binary Tree Level Order Traversal</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="std::mov">std::mov</h2>
+		<h3 id="Binary_Tree_Level_Order_Traversal">Binary Tree Level Order Traversal</h3>
 <blockquote>
-<p>std::move仅仅是简单地将左值转换为右值，它本身并没有转移任何东西。它仅仅是让对象可以转移。或许它应该被命名为std::cast_to_rvalue 或者 std::enable_move，但是现在我们对这个名称还束手无策。<br>实现move语意的最关键环节在于能够在编译期区分左值右值（也就是说识别出临时对象）。</p>
+<p>Given a binary tree, return the level order traversal of its nodes’ values. (ie, from left to right, level by level).<br>For example:<br>Given binary tree {3,9,20,#,#,15,7},<br>    3<br>   / \<br>  9  20<br>    /  \<br>   15   7<br>return its level order traversal as:<br>[<br>  [3],<br>  [9,20],<br>  [15,7]<br>]</p>
 </blockquote>
-<p>待续。。。</p>
+<p>注意要求，level遍历和bfs遍历并非是同一种东西，level是一种bfs,但是它要求区分每一层。<br>通常可以用两个队列轮流交替来存当前层和下一层的节点，这个方法比较ugly。下面给出一种用一个队列来实现的方法。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></td><td class="code"><pre>    <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> &gt;</span> levelOrder(TreeNode *root) {
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> &gt;</span> rlt;
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> v;
+        <span class="stl_container"><span class="built_in">queue</span>&lt;TreeNode*&gt;</span> q;
+
+        <span class="keyword">if</span>(root) {
+            q.push(root);
+        }
+
+        <span class="keyword">int</span> border = <span class="number">1</span>;
+        <span class="keyword">int</span> idx = <span class="number">0</span>;
+        <span class="keyword">while</span> ( !q.empty() ) {
+            TreeNode* t = q.front();
+            q.pop();
+
+            <span class="comment">//add to nextQ</span>
+            <span class="keyword">if</span> (t-&gt;left) {
+                q.push(t-&gt;left);
+            }
+            <span class="keyword">if</span> (t-&gt;right) {
+                q.push(t-&gt;right);
+            }
+
+            <span class="comment">//add to result</span>
+            v.push_back(t-&gt;val);
+
+            ++idx;
+            <span class="keyword">if</span> (idx == border) {
+                rlt.push_back(v);
+                v.clear();
+                border += q.size();
+            }
+        }
+        <span class="keyword">return</span> rlt;
+    }
+</pre></td></tr></table></figure>
+
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -102,7 +174,7 @@ std::move仅仅是简单地将左值转换为右值，它本身并没有转移�
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/C++/">C++</a>
+  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/LeetCode/">LeetCode</a><a href="/tags/Tree/">Tree</a>
   </div>
 
 
@@ -110,7 +182,7 @@ std::move仅仅是简单地将左值转换为右值，它本身并没有转移�
 
 <div class="article-share" id="share">
 
-  <div data-url="http://ragingcat.info/2014/04/15/c++-11/" data-title="C++ 11 | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  <div data-url="http://ragingcat.info/2014/04/29/leetcode之binary-tree-level-order-traversal/" data-title="LeetCode之Binary Tree Level Order Traversal | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
   </div>
 
 </div>
@@ -119,19 +191,11 @@ std::move仅仅是简单地将左值转换为右值，它本身并没有转移�
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/04/16/a-hexo-theme-hexo-theme-ragingcat/" title="A Hexo Theme: hexo-theme-ragingcat">
-  <strong>上一篇：</strong><br/>
-  <span>
-  A Hexo Theme: hexo-theme-ragingcat</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/04/14/跑步/"  title="跑步">
+<a href="/2014/04/28/二叉树非递归遍历的模板/"  title="二叉树非递归遍历的模板">
  <strong>下一篇：</strong><br/> 
- <span>跑步
+ <span>二叉树非递归遍历的模板
 </span>
 </a>
 </div>
