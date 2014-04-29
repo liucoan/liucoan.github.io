@@ -4,20 +4,20 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>leetcode之Largest Rectangle in Histogram | 如梦幻泡影，如露亦如电</title>
+    <title>二叉树非递归遍历的模板 | 如梦幻泡影，如露亦如电</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Alvin Fan">
     
-    <meta name="description" content="Largest Rectangle in Histogram
-
-Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area ">
+    <meta name="description" content="本文总结了非递归二叉树遍历（尤其是后序和中序）一种非常之简洁清晰的实现
+二叉树递归遍历可以说数据结构中最容易算法了。但是非递归遍历就不是那么的容易了，说容易的人请在3分钟内写出中序和后序的非递归遍历，要求bug-free。
+不管前序中序还是后序，都是沿着左链往下到最左端，然后再如法炮制处理最左端节点">
     
     
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="ragingat" />
-    <meta name="twitter:title" content="leetcode之Largest Rectangle in Histogram | 如梦幻泡影，如露亦如电" />
+    <meta name="twitter:title" content="二叉树非递归遍历的模板 | 如梦幻泡影，如露亦如电" />
       
     
     
@@ -65,13 +65,13 @@ Given n non-negative integers representing the histogram’s bar height where th
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
-    <time datetime="2014-04-24T07:42:13.000Z" itemprop="datePublished">
-      <a href="/2014/04/24/leetcode之largest-rectangle-in-histogram/" title="leetcode之Largest Rectangle in Histogram" itemprop="url" class="article-time">Apr 24, 2014</a>
+    <time datetime="2014-04-29T06:33:22.000Z" itemprop="datePublished">
+      <a href="/2014/04/28/二叉树非递归遍历的模板/" title="二叉树非递归遍历的模板" itemprop="url" class="article-time">Apr 28, 2014</a>
     </time>
 
   <h1 itemprop="name" class="article-name">
     
-      <a href="/2014/04/24/leetcode之largest-rectangle-in-histogram/" title="leetcode之Largest Rectangle in Histogram" itemprop="url"><span>leetcode之Largest Rectangle in Histogram</span></a>
+      <a href="/2014/04/28/二叉树非递归遍历的模板/" title="二叉树非递归遍历的模板" itemprop="url"><span>二叉树非递归遍历的模板</span></a>
   </h1>
 </header>
 
@@ -81,16 +81,51 @@ Given n non-negative integers representing the histogram’s bar height where th
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Largest_Rectangle_in_Histogram"><span class="toc-number">1.</span> <span class="toc-text">Largest Rectangle in Histogram</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#本文总结了非递归二叉树遍历（尤其是后序和中序）一种非常之简洁清晰的实现"><span class="toc-number">1.</span> <span class="toc-text">本文总结了非递归二叉树遍历（尤其是后序和中序）一种非常之简洁清晰的实现</span></a></li></ol>
 		
 		</div>
 		
-		<h3 id="Largest_Rectangle_in_Histogram">Largest Rectangle in Histogram</h3>
-<blockquote>
-<p>Given n non-negative integers representing the histogram’s bar height where the width of each bar is 1, find the area of largest rectangle in the histogram.<br><img src="http://leetcode.com/wp-content/uploads/2012/04/histogram.png" alt=""><br>Above is a histogram where width of each bar is 1, given height = [2,1,5,6,2,3].<br><img src="http://www.leetcode.com/wp-content/uploads/2012/04/histogram_area.png" alt=""><br>The largest rectangle is shown in the shaded area, which has area = 10 unit.<br>For example,<br>Given height = [2,1,5,6,2,3],<br>return 10.</p>
-</blockquote>
-<p>此题如果用常规方法，遍历所有区间[i, j]，计算出面积，最后得出最大值，时间复杂度是O($n^2$)。<br>查阅网上资料后找到一种O(n)的解法，非常tricky。<br>精华就在下面代码的注释里。</p>
-<p>最后附上代码如下</p>
+		<h3 id="本文总结了非递归二叉树遍历（尤其是后序和中序）一种非常之简洁清晰的实现">本文总结了非递归二叉树遍历（尤其是后序和中序）一种非常之简洁清晰的实现</h3>
+<p>二叉树递归遍历可以说数据结构中最容易算法了。<br>但是非递归遍历就不是那么的容易了，说容易的人请在3分钟内写出中序和后序的非递归遍历，要求bug-free。</p>
+<p>不管前序中序还是后序，都是沿着左链往下到最左端，然后再如法炮制处理最左端节点的右子树。<br>程序框架如下：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></td><td class="code"><pre>        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> v;
+        <span class="stl_container"><span class="built_in">stack</span>&lt;TreeNode*&gt;</span> s;
+        TreeNode* p = root;
+        <span class="keyword">while</span> ( !s.empty() || p ) {
+            <span class="keyword">if</span> (p) {
+                s.push(p);
+                p = p-&gt;left;
+                <span class="comment">//do something here</span>
+            }
+            <span class="keyword">else</span> {
+                p = s.top();
+                s.pop();
+                <span class="comment">//do something here</span>
+                p = p-&gt;right;
+            }
+        }
+</pre></td></tr></table></figure>
+
+<p>注意循环条件<code>while ( !s.empty() || p )</code>，这是一个很重要的技巧。</p>
+<p>前序太简单，附上后序和中序版本的代码：</p>
+<ul>
+<li><p>后序</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre>1
 2
 3
@@ -122,71 +157,80 @@ Given n non-negative integers representing the histogram’s bar height where th
 29
 30
 31
-32
-33
-34
-35
-36
-37
-38
-39
-40
-41
-42
-43
-44
-45
-46
-47
-</pre></td><td class="code"><pre><span class="keyword">class</span> Solution {
-<span class="keyword">public</span>:
-    <span class="keyword">int</span> largestRectangleArea(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> &h) {
-        <span class="comment">//在h的尾部加入一个dummy元素0</span>
-        h.push_back(<span class="number">0</span>);
-        <span class="stl_container"><span class="built_in">stack</span>&lt;<span class="keyword">int</span>&gt;</span> s;
-        <span class="keyword">int</span> cur = <span class="number">0</span>;
-        <span class="keyword">int</span> rlt = <span class="number">0</span>;
-
-        s.push(<span class="number">0</span>);
-        <span class="comment">//需要注意对cur的控制</span>
-        <span class="keyword">while</span>(cur &lt; h.size()){
-            <span class="keyword">if</span>(s.empty() || h[cur] &gt;= h[s.top()]){
-                s.push(cur++);
+</pre></td><td class="code"><pre>    <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> postorderTraversal(TreeNode *r) {
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> v;
+        <span class="stl_container"><span class="built_in">stack</span>&lt;TreeNode*&gt;</span> s;
+        TreeNode* p = r, *lst = NULL;
+        <span class="keyword">while</span> ( !s.empty() || p ) {
+            <span class="keyword">if</span> (p) {
+                s.push(p);
+                p = p-&gt;left;
             }
-            <span class="keyword">else</span>{
-                <span class="keyword">int</span> t = s.top();
+            <span class="keyword">else</span> {
+                p = s.top();
                 s.pop();
-                <span class="keyword">int</span> len;
-                <span class="keyword">if</span>(s.empty()){ <span class="comment">//说明t是cur之前所有位置中最短的那个</span>
-                    len = cur;
+
+                <span class="keyword">if</span>(!p-&gt;right || p-&gt;right == lst) {
+                    <span class="comment">//右子树为空或已经遍历</span>
+                    v.push_back(p-&gt;val);
+                    lst = p;
+                    <span class="comment">//置空p以便下次循环再次进入弹栈分支</span>
+                    p = <span class="keyword">nullptr</span>;
+                    <span class="keyword">continue</span>;
                 }
-                <span class="keyword">else</span>{
-                    <span class="keyword">int</span> new_top = s.top();
-                    <span class="comment">/*由于new_top是t之前第一个不比t高的位置，也就是说区间[new_top+1, cur-1]
-                    任意一处的高度均不小于h[t]。可以用反证法来证明之，假设在new_top和t之间有某一处k高度小于h[t],
-                    按照进栈的规则，k应该在栈里面，可是k却没有，于是产生了contradiction。同理，在t和cur之间也没
-                    有一处低于h[t]，如果有的话，当前位置就不应该是cur，而是那个位置了。*/</span>
-                    len = cur - new_top - <span class="number">1</span>;
+                <span class="keyword">else</span> {
+                    <span class="comment">//当前节点要再次入栈</span>
+                    s.push(p);
+                    <span class="comment">//先处理右子树</span>
+                    p = p-&gt;right;
                 }
-                rlt = max(rlt, h[t]*len);
             }
         }
-        <span class="keyword">return</span> rlt;
+        <span class="keyword">return</span> v;
     }
-};
-
-
-
-<span class="keyword">int</span> main()
-{
-    <span class="keyword">int</span> a[] = {<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">2</span>,<span class="number">3</span>};
-    <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> v(a, a+<span class="number">6</span> );
-    Solution so;
-    <span class="built_in">cout</span> &lt;&lt; so.largestRectangleArea(v)&lt;&lt;endl;
-
-}
+</pre></td></tr></table></figure>
+</li>
+<li><p>中序</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></td><td class="code"><pre>    <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> inorderTraversal(TreeNode *r) {
+        <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> v;
+        <span class="stl_container"><span class="built_in">stack</span>&lt;TreeNode*&gt;</span> s;
+        TreeNode* p = r;
+        <span class="keyword">while</span> ( !s.empty() || p ) {
+            <span class="keyword">if</span> (p) {
+                s.push(p);
+                p = p-&gt;left;
+            }
+            <span class="keyword">else</span> {
+                p = s.top();
+                s.pop();
+                v.push_back(p-&gt;val);
+                p = p-&gt;right;
+            }
+        }
+        <span class="keyword">return</span> v;
+    }
 </pre></td></tr></table></figure>
 
+</li>
+</ul>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -199,7 +243,7 @@ Given n non-negative integers representing the histogram’s bar height where th
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/LeetCode/">LeetCode</a><a href="/tags/Stack/">Stack</a>
+  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/Tree/">Tree</a>
   </div>
 
 
@@ -207,7 +251,7 @@ Given n non-negative integers representing the histogram’s bar height where th
 
 <div class="article-share" id="share">
 
-  <div data-url="http://ragingcat.info/2014/04/24/leetcode之largest-rectangle-in-histogram/" data-title="leetcode之Largest Rectangle in Histogram | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  <div data-url="http://ragingcat.info/2014/04/28/二叉树非递归遍历的模板/" data-title="二叉树非递归遍历的模板 | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
   </div>
 
 </div>
@@ -216,19 +260,11 @@ Given n non-negative integers representing the histogram’s bar height where th
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/04/24/leetcode之maximal-rectangle/" title="LeetCode之Maximal Rectangle">
-  <strong>上一篇：</strong><br/>
-  <span>
-  LeetCode之Maximal Rectangle</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/04/17/leetcode-best-time-to-buy-and-sell-stock/"  title="LeetCode之Best Time to Buy and Sell Stock">
+<a href="/2014/04/24/leetcode之maximal-rectangle/"  title="LeetCode之Maximal Rectangle">
  <strong>下一篇：</strong><br/> 
- <span>LeetCode之Best Time to Buy and Sell Stock
+ <span>LeetCode之Maximal Rectangle
 </span>
 </a>
 </div>
