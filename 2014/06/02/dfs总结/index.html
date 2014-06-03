@@ -4,18 +4,24 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>跑步 | 如梦幻泡影，如露亦如电</title>
+    <title>DFS总结 | 如梦幻泡影，如露亦如电</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Alvin Fan">
     
-    <meta name="description" content="从东部搬来加州好久了，各种瞎忙，也从未有锻炼过身体，可是还没开始上班，腰和颈椎都快要罢工了，看来人到了三十多岁以后身体真是不比曾经年轻的时候了。以前曾经断断续续的跑过几阵子，可是都是瞎跑，从来没有体会到快感，所以自然也就坚持不下去了。想来一件事情，如果你无法从中获得快乐的反馈，即使坚持下去也没有太大">
+    <meta name="description" content="本文总结了DFS回溯的模板，技巧和注意事项。
+1. 画面感：树
+以subsets of [1, 2, 2, 3]为例虽然有dup，但是每一层次的扩展都排除了重复的。
+2. 增量法和pop_back
+以RestoreIpAddress为例  
+
+增量法注意，这里没有pop_back()的操作，顾名思义">
     
     
     
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="ragingat" />
-    <meta name="twitter:title" content="跑步 | 如梦幻泡影，如露亦如电" />
+    <meta name="twitter:title" content="DFS总结 | 如梦幻泡影，如露亦如电" />
       
     
     
@@ -63,13 +69,13 @@
       <div id="main" class="post" itemscope itemprop="blogPost">
 	<article itemprop="articleBody"> 
 		<header class="article-info clearfix">
-    <time datetime="2014-04-15T03:07:58.000Z" itemprop="datePublished">
-      <a href="/2014/04/14/跑步/" title="跑步" itemprop="url" class="article-time">Apr 14, 2014</a>
+    <time datetime="2014-06-03T04:49:20.000Z" itemprop="datePublished">
+      <a href="/2014/06/02/dfs总结/" title="DFS总结" itemprop="url" class="article-time">Jun 2, 2014</a>
     </time>
 
   <h1 itemprop="name" class="article-name">
     
-      <a href="/2014/04/14/跑步/" title="跑步" itemprop="url"><span>跑步</span></a>
+      <a href="/2014/06/02/dfs总结/" title="DFS总结" itemprop="url"><span>DFS总结</span></a>
   </h1>
 </header>
 
@@ -79,27 +85,190 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#益处和坏处"><span class="toc-number">1.</span> <span class="toc-text">益处和坏处</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#呼吸"><span class="toc-number">2.</span> <span class="toc-text">呼吸</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#姿势"><span class="toc-number">3.</span> <span class="toc-text">姿势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间选择"><span class="toc-number">4.</span> <span class="toc-text">时间选择</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#本文总结了DFS回溯的模板，技巧和注意事项。"><span class="toc-number">1.</span> <span class="toc-text">本文总结了DFS回溯的模板，技巧和注意事项。</span></a></li><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-_画面感：树"><span class="toc-number">1.1.</span> <span class="toc-text">1. 画面感：树</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-_增量法和pop_back"><span class="toc-number">1.2.</span> <span class="toc-text">2. 增量法和pop_back</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-_返回值"><span class="toc-number">1.3.</span> <span class="toc-text">3. 返回值</span></a></li></ol>
 		
 		</div>
 		
-		<p>从东部搬来加州好久了，各种瞎忙，也从未有锻炼过身体，可是还没开始上班，腰和颈椎都快要罢工了，看来人到了三十多岁以后身体真是不比曾经年轻的时候了。<br>以前曾经断断续续的跑过几阵子，可是都是瞎跑，从来没有体会到快感，所以自然也就坚持不下去了。想来一件事情，如果你无法从中获得快乐的反馈，即使坚持下去也没有太大的意义。<br>大千世界，万物皆有学问和门道，在之乎上看了几个关于跑步的指南之后，于是在今天的傍晚饭前出去实践了一下相关理论。迎着晚风和暮色, 跑了几个街区已是满头大汗。但是，终于第一次体会到了跑步的快感，不是在跑完之后，而是在跑步中。我想，是时候坚持下去了。</p>
-<p><em>在此记录下有关跑步的一些说法，免得遗忘。</em></p>
-<h3 id="益处和坏处">益处和坏处</h3>
-<p>跑步锻炼心血管，腿部肌肉，平衡性，核心力量（因为跑步是需要保持身体躯干紧张的），几乎有益于身体各个部位，除了膝盖（这得特别小心），另外跑步还会产生内啡肽，所以有些人会上瘾，不跑不舒服。</p>
-<h3 id="呼吸">呼吸</h3>
-<p>注意呼吸的频率和脚步的节奏之间的配合，一旦找到，就会感觉一直跑下去都不会累。</p>
-<blockquote>
-<p>在跑步的前20分钟这个时候是无从谈起所谓呼吸节奏的，因为这段时候是身体适应跑步强度的开端，呼吸的节奏会比较不稳定，保持口鼻同时进气，如果天气冷用舌头轻轻顶住上颚，采用这样的方式可以让呼入的空气预热，肺部的感觉会舒服一些。<br>如果是超过20分钟的中长跑，那就要根据自己的跑动距离及心率配给自己的呼吸频率。通常有两步一呼、两步一吸，或三步一呼、三步一吸，两种方式。一般是跑动节奏慢的两步一呼、两步一吸，快的则是三步一呼、三步一吸，一般在20公里前两步一呼、两步一吸，20公里后三步一呼、三步一吸。即使在跑动过程中出现体能极限点时呼吸会出现暂时混乱，这时做一次深呼吸，并通过摆臂帮助调整呼吸节奏，往这个预定的节奏上靠。</p>
-</blockquote>
-<p>呼吸节奏非常重要，注意点是吸气时间长过呼气，呼吸连贯，每次呼气落的脚不一样，就像左脚呼气，右脚呼气，这样轮换。<br><code>吸吸呼或者吸吸吸呼，三步一呼。这个是我觉得比较适合自己的。</code></p>
-<h3 id="姿势">姿势</h3>
-<blockquote>
-<p>身体向前，身体正直（不可前倾后倒）<br>脚尖自然落地，每一个动作都放松<br>手臂放低并向前摆动，手臂与肩膀向后扩以展开胸部使呼吸顺畅<br>臀部收在身体正下方（跑步时感觉臀部在身体下方滚动）<br>头部向前，并保持在肩膀正上方，不左右偏</p>
-</blockquote>
-<h3 id="时间选择">时间选择</h3>
-<p>以晚饭前或者饭后两小时为宜</p>
-<p><a href="http://songshuhui.net/archives/52266" target="_blank">http://songshuhui.net/archives/52266</a><br><a href="http://www.zhihu.com/question/20693323" target="_blank">http://www.zhihu.com/question/20693323</a></p>
+		<h2 id="本文总结了DFS回溯的模板，技巧和注意事项。">本文总结了DFS回溯的模板，技巧和注意事项。</h2>
+<h3 id="1-_画面感：树">1. 画面感：树</h3>
+<p>以subsets of [1, 2, 2, 3]为例<br><img src="http://ww3.sinaimg.cn/large/6bbb14bdgw1eh0u6zmwmqj20cq06ymx8.jpg" alt=""><br>虽然有dup，但是每一层次的扩展都排除了重复的。</p>
+<h3 id="2-_增量法和pop_back">2. 增量法和pop_back</h3>
+<p>以RestoreIpAddress为例  </p>
+<ul>
+<li><p>增量法<br><strong>注意，这里没有pop_back()的操作，顾名思义，增量扩展每一层，不需要pop</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="keyword">void</span> dfs(<span class="built_in">string</span> s, size_t start, size_t step, <span class="built_in">string</span> ip, <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;</span> &result) {
+        <span class="keyword">if</span> (start == s.size() && step == <span class="number">4</span>) {  <span class="comment">// 找到一个合法解</span>
+            ip.resize(ip.size() - <span class="number">1</span>);
+            result.push_back(ip);
+            <span class="keyword">return</span>;
+        }
+
+        <span class="keyword">if</span> (s.size() - start &gt; (<span class="number">4</span> - step) * <span class="number">3</span>)
+            <span class="keyword">return</span>;  <span class="comment">// 剪枝</span>
+        <span class="keyword">if</span> (s.size() - start &lt; (<span class="number">4</span> - step))
+            <span class="keyword">return</span>;  <span class="comment">// 剪枝</span>
+
+        <span class="keyword">int</span> num = <span class="number">0</span>;
+        <span class="keyword">for</span> (size_t i = start; i &lt; start + <span class="number">3</span>; i++) {
+            num = num * <span class="number">10</span> + (s[i] - <span class="string">'0'</span>);
+
+            <span class="keyword">if</span> (num &lt;= <span class="number">255</span>) {  <span class="comment">// 当前结点合法，则继续往下递归</span>
+                ip += s[i];
+                dfs(s, i + <span class="number">1</span>, step + <span class="number">1</span>, ip + <span class="string">'.'</span>, result);
+            }
+            <span class="keyword">if</span> (num == <span class="number">0</span>) <span class="keyword">break</span>;  <span class="comment">// 不允许前缀0，但允许单个0</span>
+            <span class="comment">//注意，这里没有pop_back()的操作</span>
+        }
+    }
+</pre></td></tr></table></figure>
+</li>
+<li><p>常规写法<br><strong>这种写法在扩展每一层的时候需要典型的和push相应的pop动作</strong></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="keyword">void</span> restoreIpAddresses(<span class="built_in">string</span> &s, <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt;</span> &res, <span class="built_in">string</span> path, <span class="keyword">int</span> pace, <span class="keyword">int</span> cur) {
+        <span class="keyword">if</span> (pace == <span class="number">4</span> && cur == s.size()) {
+                path.resize(path.size() - <span class="number">1</span>);
+                res.push_back(path);
+                <span class="keyword">return</span>;
+        }
+        <span class="keyword">if</span> (s.size() - cur &gt; <span class="number">3</span> * (<span class="number">4</span> - pace)) <span class="keyword">return</span>;
+        <span class="keyword">if</span> (s.size() - cur &lt; (<span class="number">4</span> - pace)) <span class="keyword">return</span>;
+
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">3</span>; ++i) {
+            <span class="keyword">if</span> (cur + i &gt; s.size()) <span class="keyword">return</span>;
+            <span class="built_in">string</span> tmp = s.substr(cur, i);
+            <span class="keyword">int</span> num = stoi(tmp);
+            <span class="keyword">if</span> (num &gt; <span class="number">255</span>) {
+                <span class="keyword">return</span>;
+            }
+            path += tmp;
+            restoreIpAddresses(s, res, path + <span class="string">'.'</span>, pace + <span class="number">1</span>, cur + i);
+            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">1</span>; j &lt;= i; ++j) {
+                path.pop_back();
+            }
+            <span class="keyword">if</span>(num == <span class="number">0</span>) <span class="keyword">break</span>;
+        }
+    }
+</pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p><strong>注意以上两种写法，path的类型是传值而不是引用</strong>  </p>
+<h3 id="3-_返回值">3. 返回值</h3>
+<p>以solveSudoku为例。<br>上面的两个例子都是要求所有的solution。本题要求返回一个即可。因此在找到一个solution之后要逐层向上返回，到了最上层就不再往下扩展。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></td><td class="code"><pre><span class="keyword">bool</span> solveSudoku(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &board, <span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> &todo, <span class="keyword">int</span> step) {
+    <span class="keyword">if</span> (step == todo.size()) {
+        <span class="keyword">return</span> <span class="keyword">true</span>;
+    }
+    <span class="keyword">int</span> pos = todo[step];
+    <span class="keyword">int</span> row = pos / <span class="number">9</span>;
+    <span class="keyword">int</span> col = pos % <span class="number">9</span>;
+    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; ++i) {
+        <span class="keyword">char</span> c = <span class="string">'0'</span> + i;
+        board[row][col] = c;
+        <span class="keyword">if</span> (validCell(row, col, board)){
+            <span class="keyword">if</span>(solveSudoku(board, todo, step + <span class="number">1</span>)) <span class="keyword">return</span> <span class="keyword">true</span>;
+        }
+        board[row][col] = <span class="string">'.'</span>;
+    }
+    <span class="keyword">return</span> <span class="keyword">false</span>;
+}
+<span class="keyword">void</span> solveSudoku(<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">char</span>&gt;</span> &gt;</span> &board) {
+    <span class="built_in">std</span>::<span class="stl_container"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;</span> todo;
+    <span class="keyword">int</span> i = <span class="number">0</span>;
+    <span class="keyword">for</span> (<span class="keyword">auto</span> rows : board) {
+        <span class="keyword">int</span> j = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">auto</span> d : rows) {
+            <span class="keyword">if</span> (d == <span class="string">'.'</span>) {
+                todo.push_back(<span class="number">9</span> * i + j);
+            }
+            ++j;
+        }
+        ++i;
+    }
+    solveSudoku(board, todo, <span class="number">0</span>);
+}
+</pre></td></tr></table></figure>
+
+<p>待续。。。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -112,7 +281,7 @@
 
   <div class="article-tags">
   
-  <span></span> <a href="/tags/生活/">生活</a>
+  <span></span> <a href="/tags/Algo/">Algo</a><a href="/tags/DFS/">DFS</a>
   </div>
 
 
@@ -120,7 +289,7 @@
 
 <div class="article-share" id="share">
 
-  <div data-url="http://ragingcat.info/2014/04/14/跑步/" data-title="跑步 | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
+  <div data-url="http://ragingcat.info/2014/06/02/dfs总结/" data-title="DFS总结 | 如梦幻泡影，如露亦如电" data-tsina="undefined" class="share clearfix">
   </div>
 
 </div>
@@ -129,19 +298,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2014/04/15/c++-11/" title="C++ 11">
-  <strong>上一篇：</strong><br/>
-  <span>
-  C++ 11</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2014/04/11/ch6-dp/"  title="算法概论笔记之 Chapter6 DP">
+<a href="/2014/04/29/leetcode之recover-binary-search-tree/"  title="LeetCode之Recover Binary Search Tree">
  <strong>下一篇：</strong><br/> 
- <span>算法概论笔记之 Chapter6 DP
+ <span>LeetCode之Recover Binary Search Tree
 </span>
 </a>
 </div>
